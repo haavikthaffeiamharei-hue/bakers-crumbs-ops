@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AWS infrastructure design - Baker's Crumbs (SAM10)</title><link rel="icon" href="img/logo.svg"><link rel="stylesheet" href="style.css"></head>
-<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs &mdash; SAM10 Final Project</div>
+<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs | SAM10 Final Project</div>
 <div class="s">Systems Administration and Maintenance &middot; Thaffeia Mharei T. Haavik (solo) &middot; built on LibreChat (MIT)</div></div></header>
 <nav><a href="index.html">1. Summary</a><a href="architecture.html" class=on>2. Infrastructure</a><a href="system.html">3. System &amp; card</a><a href="baseline.html">4. Baseline</a><a href="well-architected.html">5. Well-Architected</a><a href="operations.html">6. Monitoring, backup, security</a><a href="automation-incident.html">7. Automation &amp; incident</a><a href="results.html">8&ndash;9. Results &amp; next</a><a href="declaration.html">Declaration</a></nav><main>
 
@@ -40,7 +40,7 @@
 <ol>
 <li>The customer types a question at <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a>. The browser connects over HTTPS (port 443) to the server's Elastic IP.</li>
 <li><b>Caddy</b> terminates HTTPS with a free Let's Encrypt certificate, adds security headers, and passes the request to the <b>LibreChat</b> container.</li>
-<li>LibreChat adds the Baker's Crumbs instructions &mdash; built from the five bakery documents in <b>S3</b> when the app starts &mdash; and sends the question to <b>Gemini</b> with the API key that the start script read from <b>Parameter Store</b>.</li>
+<li>LibreChat adds the Baker's Crumbs instructions (built from the five bakery documents in <b>S3</b> when the app starts) and sends the question to <b>Gemini</b> with the API key that the start script read from <b>Parameter Store</b>.</li>
 <li>Gemini's answer streams back through Caddy to the browser. The chat is saved in <b>MongoDB</b>.</li>
 <li>Every minute the request logger writes the question, answer time, success and release to a log that the <b>CloudWatch</b> agent ships to CloudWatch, where metric filters feed the dashboard and alarms; alarms email me through <b>SNS</b>.</li>
 </ol>
@@ -52,7 +52,7 @@
 <tr><td>Caddy + Let's Encrypt (container)</td><td>HTTPS at <code>23-20-79-221.sslip.io</code>. CloudFront was the plan, but new AWS accounts must be verified by AWS Support first</td></tr>
 <tr><td>S3 <code>bakers-crumbs-tmth</code> (versioned)</td><td><code>content/</code>: the bakery documents the assistant answers from. <code>backups/</code>: hourly database backups, expired after 7 days</td></tr>
 <tr><td>Systems Manager Parameter Store</td><td>Gemini API key as an encrypted SecureString, read at start-up by the instance role</td></tr>
-<tr><td>Systems Manager Session Manager</td><td>Browser terminal for admin work &mdash; no SSH keys exist</td></tr>
+<tr><td>Systems Manager Session Manager</td><td>Browser terminal for admin work; no SSH keys exist</td></tr>
 <tr><td>IAM</td><td>MFA on root and on my IAM user; read-only daily user; MFA-protected admin role; least-privilege role for the server</td></tr>
 <tr><td>CloudWatch (agent, Logs, metrics, dashboard, alarms)</td><td>Memory and disk metrics, app/database/web/request/automation logs (30-day retention), 9 alarms, the BakersCrumbs dashboard</td></tr>
 <tr><td>SNS <code>bakers-crumbs-alerts</code></td><td>Emails alarms to my real inbox</td></tr>

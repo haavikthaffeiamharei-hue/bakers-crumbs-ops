@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Well-Architected review - Baker's Crumbs (SAM10)</title><link rel="icon" href="img/logo.svg"><link rel="stylesheet" href="style.css"></head>
-<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs &mdash; SAM10 Final Project</div>
+<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs | SAM10 Final Project</div>
 <div class="s">Systems Administration and Maintenance &middot; Thaffeia Mharei T. Haavik (solo) &middot; built on LibreChat (MIT)</div></div></header>
 <nav><a href="index.html">1. Summary</a><a href="architecture.html">2. Infrastructure</a><a href="system.html">3. System &amp; card</a><a href="baseline.html">4. Baseline</a><a href="well-architected.html" class=on>5. Well-Architected</a><a href="operations.html">6. Monitoring, backup, security</a><a href="automation-incident.html">7. Automation &amp; incident</a><a href="results.html">8&ndash;9. Results &amp; next</a><a href="declaration.html">Declaration</a></nav><main>
 
 <h1>Well-Architected review</h1>
-<p><b>Priority:</b> I optimised for <b>Reliability</b> &mdash; alarms, tested backups, a scheduled health check &mdash; because a bakery's customers need answers they can trust and the chats must not be lost. I deliberately accepted <b>Performance Efficiency</b> as weaker: one server, no load balancer, no load testing, because the traffic of a small bakery is tiny and a second server would double the cost.</p>
-<h2>Pass #2 &mdash; 23 Nov 2026, after the incidents and operations work</h2>
+<p><b>Priority:</b> I optimised for <b>Reliability</b> (alarms, tested backups, a scheduled health check) because a bakery's customers need answers they can trust and the chats must not be lost. I deliberately accepted <b>Performance Efficiency</b> as weaker: one server, no load balancer, no load testing, because the traffic of a small bakery is tiny and a second server would double the cost.</p>
+<h2>Pass #2: 23 Nov 2026, after the incidents and operations work</h2>
 <table><tr><th>Pillar</th><th>What the framework asks</th><th>What my system does</th><th>Verdict</th></tr>
 <tr><td>Operational Excellence</td><td>Observe the workload, automate, learn from failures</td><td>Deployment scripted and pulled from GitHub; request log with question, time, success and release; dashboard; two scheduled automations; two incidents written up; runbook tested</td><td class="ok">Good</td></tr>
 <tr><td>Security</td><td>MFA, least privilege, no secrets in code, audit trail, protect data</td><td>MFA on root and IAM user; read-only daily user; admin only via MFA role; CloudTrail; Gemini key only in Parameter Store; least-privilege instance role; temporary setup policy removed after use; no SSH; ports 80/443 only; encrypted EBS; HTTPS + security headers; 0 secrets in Git history</td><td class="ok">Good</td></tr>
@@ -15,7 +15,7 @@
 <tr><td>Performance Efficiency</td><td>Right-size, measure, keep it responsive</td><td>Answers in 0.6&ndash;1.0 s (request log); memory about 16% and CPU under 10% at idle (dashboard), so the instance has room to spare; no load test</td><td class="adq">Adequate (accepted weaker)</td></tr>
 <tr><td>Cost Optimization</td><td>Know your spend, alert on it, avoid waste</td><td>$10 budget alert; tags <code>Project=SAM10</code>; no paid extras (no WAF, NAT, load balancer); $0.01 spent of $120 credits</td><td class="ok">Good</td></tr>
 <tr><td>Sustainability</td><td>Minimise idle and oversized resources</td><td>One instance; but 8 GB is more than needed at current load and it runs 24/7</td><td class="adq">Adequate</td></tr></table>
-<h2>Pass #1 &mdash; 23 Nov 2026, 15:10 (UTC+8), right after the deployment first worked</h2>
+<h2>Pass #1: 23 Nov 2026, 15:10 (UTC+8), right after the deployment first worked</h2>
 <table><tr><th>Pillar</th><th>What the system did then</th><th>Verdict</th></tr>
 <tr><td>Operational Excellence</td><td>Scripted deployment from GitHub, but no monitoring, alarms or automation; incident 1 found only by chance</td><td class="gap">Gap</td></tr>
 <tr><td>Security</td><td>MFA, roles, CloudTrail, Parameter Store, no SSH, encrypted disk, HTTPS already in place</td><td class="ok">Good</td></tr>

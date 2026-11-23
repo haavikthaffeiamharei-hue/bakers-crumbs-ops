@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Results and next steps - Baker's Crumbs (SAM10)</title><link rel="icon" href="img/logo.svg"><link rel="stylesheet" href="style.css"></head>
-<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs &mdash; SAM10 Final Project</div>
+<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs | SAM10 Final Project</div>
 <div class="s">Systems Administration and Maintenance &middot; Thaffeia Mharei T. Haavik (solo) &middot; built on LibreChat (MIT)</div></div></header>
 <nav><a href="index.html">1. Summary</a><a href="architecture.html">2. Infrastructure</a><a href="system.html">3. System &amp; card</a><a href="baseline.html">4. Baseline</a><a href="well-architected.html">5. Well-Architected</a><a href="operations.html">6. Monitoring, backup, security</a><a href="automation-incident.html">7. Automation &amp; incident</a><a href="results.html" class=on>8&ndash;9. Results &amp; next</a><a href="declaration.html">Declaration</a></nav><main>
 
@@ -10,32 +10,32 @@
 <table><tr><th>Measure</th><th>Before</th><th>After</th><th>How measured</th></tr>
 <tr><td>Failed answers</td><td><span class="todo">[x of y]</span> in 23 Nov 07:20&ndash;07:45 UTC (25 min, before the incident 2 fix)</td><td><span class="todo">[x of y]</span> in 23 Nov 07:45&ndash;08:10 UTC (25 min, after the fix)</td><td>Request log, counted by script</td></tr>
 <tr><td>Average answer time</td><td><span class="todo">[ms]</span> (same window)</td><td><span class="todo">[ms]</span> (same window)</td><td>Request log <code>duration_ms</code></td></tr>
-<tr><td>Time to detect an assistant outage</td><td>Incident 1 (23 Nov 06:16 UTC, no monitoring): found only because I was testing &mdash; otherwise undetected</td><td>Incident 2 (23 Nov 07:35 UTC): alarm email after about 1&ndash;3 min</td><td>Incident timelines</td></tr>
+<tr><td>Time to detect an assistant outage</td><td>Incident 1 (23 Nov 06:16 UTC, no monitoring): found only because I was testing; otherwise undetected</td><td>Incident 2 (23 Nov 07:35 UTC): alarm email after about 1&ndash;3 min</td><td>Incident timelines</td></tr>
 <tr><td>Time to fix</td><td>Incident 1: about 5 min</td><td>Incident 2: about 7 min after the alarm, with a now-written runbook</td><td>Incident timelines</td></tr>
-<tr><td>Database recovery</td><td>17&ndash;22 Nov: no backups &mdash; a lost disk would lose every chat</td><td>23 Nov: restore tested, 12 s, 0 chats lost; RPO 1 h</td><td>Restore test</td></tr>
+<tr><td>Database recovery</td><td>17&ndash;22 Nov: no backups, so a lost disk would lose every chat</td><td>23 Nov: restore tested, 12 s, 0 chats lost; RPO 1 h</td><td>Restore test</td></tr>
 <tr><td>Monthly cost</td><td>$0.00 used of $120 credits (17 Nov 2026)</td><td><span class="todo">[$ used, date]</span></td><td>AWS Billing &rarr; Credits</td></tr></table>
-<figure><a href="img/E-06_dashboard-3h.jpg"><img src="img/E-06_dashboard-3h.jpg" alt="Graph: answers, errors and response time on 23 Nov 2026 05:00&amp;ndash;08:00 UTC &amp;mdash; failed answers and the 89-second response during incident 2 (about 07:35), then normal answers after the 07:45 fix." loading="lazy"></a><figcaption>Graph: answers, errors and response time on 23 Nov 2026 05:00&ndash;08:00 UTC &mdash; failed answers and the 89-second response during incident 2 (about 07:35), then normal answers after the 07:45 fix.</figcaption></figure>
+<figure><a href="img/E-06_dashboard-3h.jpg"><img src="img/E-06_dashboard-3h.jpg" alt="Graph: answers, errors and response time on 23 Nov 2026 05:00&amp;ndash;08:00 UTC: failed answers and the 89-second response during incident 2 (about 07:35), then normal answers after the 07:45 fix." loading="lazy"></a><figcaption>Graph: answers, errors and response time on 23 Nov 2026 05:00&ndash;08:00 UTC: failed answers and the 89-second response during incident 2 (about 07:35), then normal answers after the 07:45 fix.</figcaption></figure>
 <div class="grid2"><figure><a href="img/cost_02_credits-before-120usd.jpg"><img src="img/cost_02_credits-before-120usd.jpg" alt="Cost before: $0.00 used, $120 credits (17 Nov 2026)." loading="lazy"></a><figcaption>Cost before: $0.00 used, $120 credits (17 Nov 2026).</figcaption></figure><figure><span class="todo">[Cost after screenshot: Billing &rarr; Credits]</span></figure></div>
 
 <h2>Test questions and the quality number</h2>
-<p><b>Correct on 4 of 6</b> &mdash; six questions asked in new chats on 23 Nov 2026 (07:46&ndash;07:51 UTC, gemini-3.5-flash-lite, release 03b3cc7), each answer compared by hand with the bakery documents.</p>
+<p><b>Correct on 4 of 6</b>: six questions asked in new chats on 23 Nov 2026 (07:46&ndash;07:51 UTC, gemini-3.5-flash-lite, release 03b3cc7), each answer compared by hand with the bakery documents.</p>
 <table><tr><th>#</th><th>Question</th><th>Answer (summary)</th><th>Grade</th></tr>
 <tr><td>1</td><td>What time do you open on Saturday?</td><td>6:00 AM</td><td class="ok">Correct</td></tr>
 <tr><td>2</td><td>How much is a Cookie Box of 12?</td><td>&#8369;450</td><td class="ok">Correct</td></tr>
 <tr><td>3</td><td>Do you deliver, and how much is the fee?</td><td>Tue&ndash;Sat 10 AM&ndash;5 PM, &#8369;500 minimum, within 5 km; &#8369;60 within 3 km, &#8369;90 for 3&ndash;5 km</td><td class="ok">Correct</td></tr>
 <tr><td>4</td><td>Which of your cakes contain nuts?</td><td>Mango Cream Cake may contain cashew crumble; shared kitchen; confirm with staff</td><td class="ok">Correct (with the safety warning)</td></tr>
-<tr><td>5</td><td>Can I cancel a cake pre-order the day before?</td><td>"Yes" &hellip; then: whole-cake down payments are refundable only 48 h before</td><td class="adq">Partly wrong &mdash; the opening "Yes" misleads for a whole cake</td></tr>
-<tr><td>6</td><td>Do you sell pizza?</td><td>"We don't sell pizza"</td><td class="gap">Wrong by its rules &mdash; not in the documents, so it should have said it doesn't know; it guessed</td></tr></table>
-<div class="grid2"><figure><a href="img/E-03_q1-saturday-hours.jpg"><img src="img/E-03_q1-saturday-hours.jpg" alt="Q1 &amp;mdash; correct." loading="lazy"></a><figcaption>Q1 &mdash; correct.</figcaption></figure><figure><a href="img/E-03_q3-delivery.jpg"><img src="img/E-03_q3-delivery.jpg" alt="Q3 &amp;mdash; correct, every detail." loading="lazy"></a><figcaption>Q3 &mdash; correct, every detail.</figcaption></figure></div>
-<div class="grid2"><figure><a href="img/E-03_q5-cancel-cake.jpg"><img src="img/E-03_q5-cancel-cake.jpg" alt="Q5 &amp;mdash; partly wrong." loading="lazy"></a><figcaption>Q5 &mdash; partly wrong.</figcaption></figure><figure><a href="img/E-03_q6-pizza.jpg"><img src="img/E-03_q6-pizza.jpg" alt="Q6 &amp;mdash; the failure: a plausible guess instead of &quot;I don&#x27;t know&quot;." loading="lazy"></a><figcaption>Q6 &mdash; the failure: a plausible guess instead of "I don't know".</figcaption></figure></div>
+<tr><td>5</td><td>Can I cancel a cake pre-order the day before?</td><td>"Yes" &hellip; then: whole-cake down payments are refundable only 48 h before</td><td class="adq">Partly wrong: the opening "Yes" misleads for a whole cake</td></tr>
+<tr><td>6</td><td>Do you sell pizza?</td><td>"We don't sell pizza"</td><td class="gap">Wrong by its rules: not in the documents, so it should have said it doesn't know; it guessed</td></tr></table>
+<div class="grid2"><figure><a href="img/E-03_q1-saturday-hours.jpg"><img src="img/E-03_q1-saturday-hours.jpg" alt="Q1: correct." loading="lazy"></a><figcaption>Q1: correct.</figcaption></figure><figure><a href="img/E-03_q3-delivery.jpg"><img src="img/E-03_q3-delivery.jpg" alt="Q3: correct, every detail." loading="lazy"></a><figcaption>Q3: correct, every detail.</figcaption></figure></div>
+<div class="grid2"><figure><a href="img/E-03_q5-cancel-cake.jpg"><img src="img/E-03_q5-cancel-cake.jpg" alt="Q5: partly wrong." loading="lazy"></a><figcaption>Q5: partly wrong.</figcaption></figure><figure><a href="img/E-03_q6-pizza.jpg"><img src="img/E-03_q6-pizza.jpg" alt="Q6: the failure: a plausible guess instead of &quot;I don&#x27;t know&quot;." loading="lazy"></a><figcaption>Q6: the failure: a plausible guess instead of "I don't know".</figcaption></figure></div>
 
 <h1>What I would do next</h1>
 <ol>
-<li><b>Automatic rebuild from a launch template</b> &mdash; the top Well-Architected gap: a new server built from the repository and the newest backup in minutes instead of 30&ndash;45.</li>
-<li><b>A nightly graded test run</b> &mdash; ask the six test questions automatically, score them against expected keywords and alarm if fewer than 5 of 6 pass, so a wrong answer is caught, not only a failed one.</li>
-<li><b>Stricter "I don't know" behaviour</b> &mdash; reword the instructions and add examples so out-of-scope questions (pizza) get the contact email instead of a guess.</li>
-<li><b>Move LibreChat's own secrets into Parameter Store</b> &mdash; today they live in a root-only <code>.env</code> on the server.</li>
-<li><b>Stop the empty-answer alarm counting provider errors</b> &mdash; during incident 2 it fired for answers that had already failed, a duplicate alert.</li>
+<li><b>Automatic rebuild from a launch template</b>: the top Well-Architected gap: a new server built from the repository and the newest backup in minutes instead of 30&ndash;45.</li>
+<li><b>A nightly graded test run</b>: ask the six test questions automatically, score them against expected keywords and alarm if fewer than 5 of 6 pass, so a wrong answer is caught, not only a failed one.</li>
+<li><b>Stricter "I don't know" behaviour</b>: reword the instructions and add examples so out-of-scope questions (pizza) get the contact email instead of a guess.</li>
+<li><b>Move LibreChat's own secrets into Parameter Store</b>: today they live in a root-only <code>.env</code> on the server.</li>
+<li><b>Stop the empty-answer alarm counting provider errors</b>: during incident 2 it fired for answers that had already failed, a duplicate alert.</li>
 </ol>
 
 </main><footer>Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>

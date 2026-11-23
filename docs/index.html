@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Executive summary - Baker's Crumbs (SAM10)</title><link rel="icon" href="img/logo.svg"><link rel="stylesheet" href="style.css"></head>
-<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs &mdash; SAM10 Final Project</div>
+<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs | SAM10 Final Project</div>
 <div class="s">Systems Administration and Maintenance &middot; Thaffeia Mharei T. Haavik (solo) &middot; built on LibreChat (MIT)</div></div></header>
 <nav><a href="index.html" class=on>1. Summary</a><a href="architecture.html">2. Infrastructure</a><a href="system.html">3. System &amp; card</a><a href="baseline.html">4. Baseline</a><a href="well-architected.html">5. Well-Architected</a><a href="operations.html">6. Monitoring, backup, security</a><a href="automation-incident.html">7. Automation &amp; incident</a><a href="results.html">8&ndash;9. Results &amp; next</a><a href="declaration.html">Declaration</a></nav><main>
 
 <h1>Executive summary</h1>
-<p><b>Baker's Crumbs</b> is a chat assistant for an invented neighbourhood bakery. Customers ask everyday questions &mdash; opening hours, prices, pre-orders, delivery, ingredients &mdash; and get an answer in about a second, any time, instead of waiting for staff to reply. It is built on <a href="https://github.com/danny-avila/LibreChat">LibreChat</a>, an open-source ChatGPT-style app, connected to Google's Gemini model, and it runs on Amazon Web Services (AWS).</p>
+<p><b>Baker's Crumbs</b> is a chat assistant for an invented neighbourhood bakery. Customers ask everyday questions (opening hours, prices, pre-orders, delivery, ingredients) and get an answer in about a second, any time, instead of waiting for staff to reply. It is built on <a href="https://github.com/danny-avila/LibreChat">LibreChat</a>, an open-source ChatGPT-style app, connected to Google's Gemini model, and it runs on Amazon Web Services (AWS).</p>
 <p>This project is about <b>running</b> that system well. At the start nothing was watching it: when the AI model stopped answering for the first time, I only noticed because I happened to be testing. There were no backups, no alarms and one all-powerful login. I added round-the-clock monitoring with email alarms, hourly backups that I proved by deleting the database and restoring it, scheduled health checks, and a locked-down account. When the assistant failed a second time, the alarms emailed me within about three minutes and it was fixed seven minutes later.</p>
 <div class="kpis">
 <div class="kpi"><div class="n">4 of 6</div><div class="l">test questions answered fully correctly (23 Nov 2026)</div></div>
@@ -22,7 +22,7 @@
 <tr><th>Code and evidence</th><td><a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops</a></td></tr>
 <tr><th>Base system</th><td>LibreChat v0.8.9 by Danny Avila and contributors, MIT licence</td></tr>
 <tr><th>AI model</th><td>Google Gemini <code>gemini-3.5-flash-lite</code>, free tier (outside AWS)</td></tr>
-<tr><th>AWS</th><td>One EC2 instance, S3, Parameter Store, CloudWatch, SNS, IAM, CloudTrail, Budgets &mdash; us-east-1</td></tr>
+<tr><th>AWS</th><td>One EC2 instance, S3, Parameter Store, CloudWatch, SNS, IAM, CloudTrail, Budgets, us-east-1</td></tr>
 <tr><th>Built by</th><td>Thaffeia Mharei T. Haavik, solo</td></tr></table>
 
 </main><footer>Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>

@@ -1,8 +1,8 @@
-# Baker's Crumbs — operations repository (SAM10 Final Project)
+# Baker's Crumbs: operations repository (SAM10 Final Project)
 
 Baker's Crumbs is a question-and-answer assistant for an **invented** neighbourhood bakery. It is a reskin of
 [LibreChat](https://github.com/danny-avila/LibreChat), connected to Google Gemini (free tier), deployed and operated
-on AWS for the SAM10 — Systems Administration and Maintenance final project.
+on AWS for the SAM10 (Systems Administration and Maintenance) final project.
 
 This repository holds everything needed to rebuild the deployment: the reskin, the start-up script, the bakery
 documents, and (later) the automation scripts. **It contains no keys, passwords or tokens.**
@@ -14,7 +14,7 @@ documents, and (later) the automation scripts. **It contains no keys, passwords 
 | Base system | LibreChat v0.8.9 (commit `4700c44eb`, cloned 23 Nov 2026) |
 | Source | https://github.com/danny-avila/LibreChat |
 | Author | Danny Avila and the LibreChat contributors |
-| Licence | MIT — https://github.com/danny-avila/LibreChat/blob/main/LICENSE |
+| Licence | MIT: https://github.com/danny-avila/LibreChat/blob/main/LICENSE |
 | AI model | Google Gemini via the Gemini API free tier (Google AI Studio) |
 | Bakery content, logo, scripts | Written for this project; the bakery and all its details are invented |
 
@@ -92,7 +92,7 @@ If `git pull` complains about local changes after installing, run `git config co
 
 ## Contribution log
 
-Solo project — all work by Thaffeia Mharei T. Haavik.
+Solo project: all work by Thaffeia Mharei T. Haavik.
 
 | Date | Work |
 | --- | --- |
