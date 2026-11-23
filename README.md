@@ -36,6 +36,7 @@ scripts/backup-mongodb.sh                AUTOMATION 1 - hourly database backup t
 scripts/health-check.sh                  AUTOMATION 2 - 15-minute health check -> CloudWatch metric HealthCheckOK
 scripts/install-automation.sh            Installs both automations as cron jobs
 scripts/restore-mongodb.sh               Restores the database from the newest (or a given) S3 backup
+scripts/score-answers.sh                 Scores the 6 test questions against the bakery documents (quality number)
 monitoring/setup-cloudwatch.sh           Creates log groups, metric filters, alarms and the dashboard
 monitoring/dashboard.json                CloudWatch dashboard layout
 monitoring/cloudwatch-agent.json         CloudWatch agent config (memory, disk, log files)
@@ -85,6 +86,7 @@ Always start or restart the app with `start-bakers-crumbs.sh`, not a bare `docke
 bash /opt/bakers-crumbs-ops/scripts/install-automation.sh     # schedules backup (hourly) and health check (15 min)
 bash /opt/bakers-crumbs-ops/scripts/backup-mongodb.sh         # run a backup now
 bash /opt/bakers-crumbs-ops/scripts/restore-mongodb.sh        # restore the newest backup (stops and restarts the app)
+bash /opt/bakers-crumbs-ops/scripts/score-answers.sh          # score the test questions (PASS/FAIL + total)
 ```
 Each automation run writes one JSON line to `/var/log/bakers-crumbs/automation.log`, shipped to the CloudWatch
 log group `/bakers-crumbs/automation`. The S3 lifecycle rule `expire-backups-after-7-days` keeps backups for 7 days.
