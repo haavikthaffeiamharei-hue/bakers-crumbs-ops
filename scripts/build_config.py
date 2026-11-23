@@ -142,8 +142,8 @@ config = {
                 "apiKey": "${GOOGLE_KEY}",
                 "baseURL": "https://generativelanguage.googleapis.com/v1beta/openai/",
                 "models": {"default": [model], "fetch": False},
-                "titleConvo": True,
-                "titleModel": model,
+                # Title generation would double the calls to the free Gemini quota (one extra request per chat)
+                "titleConvo": False,
                 "modelDisplayLabel": "Baker's Crumbs Helper",
                 "iconURL": "/assets/logo.svg",
             }

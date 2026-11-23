@@ -12,7 +12,7 @@ LC_DIR=/opt/librechat
 REGION=us-east-1
 BUCKET=bakers-crumbs-tmth
 KEY_PARAM=/bakers-crumbs/gemini-api-key
-GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}
+GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash-lite}
 # Public HTTPS address. Default: the Elastic IP as a free sslip.io hostname (23.20.79.221 -> 23-20-79-221.sslip.io)
 PUBLIC_HOST=${PUBLIC_HOST:-23-20-79-221.sslip.io}
 RELEASE="bakers-crumbs-$(git -C "$REPO_DIR" rev-parse --short HEAD 2>/dev/null || echo local)"
