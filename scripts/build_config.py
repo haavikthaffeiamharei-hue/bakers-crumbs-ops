@@ -73,7 +73,7 @@ light = {
     "rgb-surface-composer-hover": "250 240 225",
     "rgb-surface-user-message": "243 224 196",
     "rgb-surface-menu": "255 250 242",
-    "rgb-surface-card": "250 240 225",
+    "rgb-surface-card": "243 228 205",
     "rgb-surface-active": "238 220 192",
     "rgb-surface-dialog": "255 250 242",
 }
@@ -107,7 +107,7 @@ dark = {
     "rgb-surface-composer-hover": "58 42 31",
     "rgb-surface-user-message": "92 62 38",
     "rgb-surface-menu": "43 31 23",
-    "rgb-surface-card": "43 31 23",
+    "rgb-surface-card": "70 51 37",
     "rgb-surface-active": "70 51 37",
     "rgb-surface-dialog": "43 31 23",
 }
@@ -133,6 +133,22 @@ config = {
             "modes": {"light": {"colors": light}, "dark": {"colors": dark}},
         },
     },
+    # Gemini through its OpenAI-compatible API as a LibreChat custom endpoint,
+    # so the chat shows the Baker's Crumbs icon and name instead of the Gemini icon.
+    "endpoints": {
+        "custom": [
+            {
+                "name": "BakersCrumbs",
+                "apiKey": "${GOOGLE_KEY}",
+                "baseURL": "https://generativelanguage.googleapis.com/v1beta/openai/",
+                "models": {"default": [model], "fetch": False},
+                "titleConvo": True,
+                "titleModel": model,
+                "modelDisplayLabel": "Baker's Crumbs Helper",
+                "iconURL": "/assets/logo.svg",
+            }
+        ]
+    },
     "modelSpecs": {
         "enforce": True,
         "prioritize": True,
@@ -152,13 +168,13 @@ config = {
                     "Which of your cakes contain nuts?",
                 ],
                 "preset": {
-                    "endpoint": "google",
+                    "endpoint": "BakersCrumbs",
                     "model": model,
                     "modelLabel": "Baker's Crumbs Helper",
                     "iconURL": "/assets/logo.svg",
                     "promptPrefix": instructions,
                     "temperature": 0.2,
-                    "maxOutputTokens": 600,
+                    "max_tokens": 600,
                 },
             }
         ],

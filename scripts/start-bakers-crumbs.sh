@@ -46,8 +46,7 @@ set_env() {
 }
 set_env APP_TITLE "Baker's Crumbs"
 set_env CUSTOM_FOOTER "Baker's Crumbs Helper - an invented bakery for a SAM10 class project. Built on LibreChat (MIT)."
-set_env ENDPOINTS "google"
-set_env GOOGLE_MODELS "$GEMINI_MODEL"
+set_env ENDPOINTS "custom"
 set_env BAKERS_CRUMBS_RELEASE "$RELEASE"
 set_env SCHEDULES_SINGLE_PROCESS "true"
 # The real key comes from Parameter Store below; make sure no key is kept in .env
