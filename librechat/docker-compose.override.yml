@@ -2,6 +2,13 @@
 # Copied into /opt/librechat by scripts/start-bakers-crumbs.sh.
 services:
   api:
+    # Application log -> CloudWatch Logs (credentials come from the EC2 instance role)
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-create-group: "true"
+        awslogs-group: /bakers-crumbs/librechat
     environment:
       # Injected from SSM Parameter Store by start-bakers-crumbs.sh at start-up; never stored in a file.
       - GOOGLE_KEY=${GOOGLE_KEY:-}
@@ -17,6 +24,15 @@ services:
       - ./branding/logo-192.png:/app/client/dist/assets/icon-192x192.png:ro
       - ./branding/maskable-512.png:/app/client/dist/assets/maskable-icon.png:ro
 
+  # Database log -> CloudWatch Logs
+  mongodb:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-create-group: "true"
+        awslogs-group: /bakers-crumbs/mongodb
+
   # HTTPS front door. Ports 80 (redirect + certificate check) and 443 are the only ones open in the security group.
   caddy:
     image: caddy:2
@@ -27,6 +43,13 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    # Access log (one JSON line per HTTP request: status, duration) -> CloudWatch Logs
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-create-group: "true"
+        awslogs-group: /bakers-crumbs/caddy-access
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

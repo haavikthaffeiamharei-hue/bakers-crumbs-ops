@@ -1,0 +1,260 @@
+{
+ "widgets": [
+  {
+   "type": "text",
+   "x": 0,
+   "y": 0,
+   "width": 24,
+   "height": 3,
+   "properties": {
+    "markdown": "## Baker's Crumbs - operations dashboard\nWhy these alarm thresholds: **CPU > 85% for 10 min** and **memory > 90% for 5 min** leave headroom on one 8 GB server before containers are killed; **disk > 85% for 1 h** gives time to clean up logs before the disk fills; **any HTTP 5xx** or **status-check failure** means the site is broken now; **> 5% failed answers in 15 min** catches a broken model or key while the site still looks up; **any empty answer in 30 min** means the bakery documents are missing; **average answer > 10 s** is slower than Gemini's normal 2-6 s. All alarms email bakers-crumbs-alerts."
+   }
+  },
+  {
+   "type": "metric",
+   "x": 0,
+   "y": 3,
+   "width": 8,
+   "height": 6,
+   "properties": {
+    "title": "Requests (HTTP, all pages)",
+    "region": "us-east-1",
+    "metrics": [
+     [
+      "BakersCrumbs",
+      "HttpRequests",
+      {
+       "label": "HTTP requests"
+      }
+     ]
+    ],
+    "stat": "Sum",
+    "period": 300,
+    "view": "timeSeries"
+   }
+  },
+  {
+   "type": "metric",
+   "x": 8,
+   "y": 3,
+   "width": 8,
+   "height": 6,
+   "properties": {
+    "title": "Errors (HTTP 5xx and failed answers)",
+    "region": "us-east-1",
+    "metrics": [
+     [
+      "BakersCrumbs",
+      "Http5xx",
+      {
+       "label": "HTTP 5xx",
+       "color": "#d62728"
+      }
+     ],
+     [
+      "BakersCrumbs",
+      "AnswersFailed",
+      {
+       "label": "Failed answers",
+       "color": "#ff7f0e"
+      }
+     ],
+     [
+      "BakersCrumbs",
+      "EmptyAnswers",
+      {
+       "label": "Empty answers",
+       "color": "#9467bd"
+      }
+     ]
+    ],
+    "stat": "Sum",
+    "period": 300,
+    "view": "timeSeries",
+    "annotations": {
+     "horizontal": [
+      {
+       "value": 0,
+       "label": "alarm above 0"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "metric",
+   "x": 16,
+   "y": 3,
+   "width": 8,
+   "height": 6,
+   "properties": {
+    "title": "Answers (request volume)",
+    "region": "us-east-1",
+    "metrics": [
+     [
+      "BakersCrumbs",
+      "AnswersTotal",
+      {
+       "label": "Answers given"
+      }
+     ]
+    ],
+    "stat": "Sum",
+    "period": 300,
+    "view": "timeSeries"
+   }
+  },
+  {
+   "type": "metric",
+   "x": 0,
+   "y": 9,
+   "width": 8,
+   "height": 6,
+   "properties": {
+    "title": "Response time",
+    "region": "us-east-1",
+    "metrics": [
+     [
+      "BakersCrumbs",
+      "AnswerDurationMs",
+      {
+       "label": "Answer time (ms)",
+       "stat": "Average"
+      }
+     ],
+     [
+      "BakersCrumbs",
+      "ResponseTimeSeconds",
+      {
+       "label": "HTTP response (s)",
+       "stat": "Average",
+       "yAxis": "right"
+      }
+     ]
+    ],
+    "stat": "Average",
+    "period": 300,
+    "view": "timeSeries",
+    "annotations": {
+     "horizontal": [
+      {
+       "value": 10000,
+       "label": "slow-answer alarm 10 s"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "metric",
+   "x": 8,
+   "y": 9,
+   "width": 8,
+   "height": 6,
+   "properties": {
+    "title": "CPU utilisation (%)",
+    "region": "us-east-1",
+    "metrics": [
+     [
+      "AWS/EC2",
+      "CPUUtilization",
+      "InstanceId",
+      "__INSTANCE_ID__",
+      {
+       "label": "CPU %"
+      }
+     ]
+    ],
+    "stat": "Average",
+    "period": 300,
+    "view": "timeSeries",
+    "yAxis": {
+     "left": {
+      "min": 0,
+      "max": 100
+     }
+    },
+    "annotations": {
+     "horizontal": [
+      {
+       "value": 85,
+       "label": "alarm 85%"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "metric",
+   "x": 16,
+   "y": 9,
+   "width": 8,
+   "height": 6,
+   "properties": {
+    "title": "Memory and disk used (%)",
+    "region": "us-east-1",
+    "metrics": [
+     [
+      "CWAgent",
+      "mem_used_percent",
+      "InstanceId",
+      "__INSTANCE_ID__",
+      {
+       "label": "Memory %"
+      }
+     ],
+     [
+      "CWAgent",
+      "disk_used_percent",
+      "InstanceId",
+      "__INSTANCE_ID__",
+      {
+       "label": "Disk / %"
+      }
+     ]
+    ],
+    "stat": "Average",
+    "period": 60,
+    "view": "timeSeries",
+    "yAxis": {
+     "left": {
+      "min": 0,
+      "max": 100
+     }
+    },
+    "annotations": {
+     "horizontal": [
+      {
+       "value": 85,
+       "label": "disk alarm 85%"
+      },
+      {
+       "value": 90,
+       "label": "memory alarm 90%"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "alarm",
+   "x": 0,
+   "y": 15,
+   "width": 24,
+   "height": 3,
+   "properties": {
+    "title": "Alarms",
+    "alarms": [
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-cpu-high",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-status-check-failed",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-disk-high",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-memory-high",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-http-5xx",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-answers-failed",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-empty-answer",
+     "arn:aws:cloudwatch:us-east-1:__ACCOUNT__:alarm:bakers-crumbs-slow-answers"
+    ]
+   }
+  }
+ ]
+}
