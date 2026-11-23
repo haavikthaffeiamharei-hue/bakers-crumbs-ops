@@ -13,6 +13,8 @@ REGION=us-east-1
 BUCKET=bakers-crumbs-tmth
 KEY_PARAM=/bakers-crumbs/gemini-api-key
 GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}
+# Public HTTPS address. Default: the Elastic IP as a free sslip.io hostname (23.20.79.221 -> 23-20-79-221.sslip.io)
+PUBLIC_HOST=${PUBLIC_HOST:-23-20-79-221.sslip.io}
 RELEASE="bakers-crumbs-$(git -C "$REPO_DIR" rev-parse --short HEAD 2>/dev/null || echo local)"
 
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [start-bakers-crumbs] $*"; }
@@ -34,6 +36,7 @@ log "Copying branding and compose override"
 rm -rf "$LC_DIR/branding"
 cp -r "$REPO_DIR/librechat/branding" "$LC_DIR/branding"
 cp "$REPO_DIR/librechat/docker-compose.override.yml" "$LC_DIR/docker-compose.override.yml"
+sed "s|__PUBLIC_HOST__|$PUBLIC_HOST|g" "$REPO_DIR/librechat/Caddyfile.template" > "$LC_DIR/Caddyfile"
 
 log "Applying non-secret settings to .env"
 set_env() {
@@ -49,6 +52,9 @@ set_env CUSTOM_FOOTER "Baker's Crumbs Helper - an invented bakery for a SAM10 cl
 set_env ENDPOINTS "custom"
 set_env BAKERS_CRUMBS_RELEASE "$RELEASE"
 set_env SCHEDULES_SINGLE_PROCESS "true"
+set_env DOMAIN_CLIENT "https://$PUBLIC_HOST"
+set_env DOMAIN_SERVER "https://$PUBLIC_HOST"
+set_env TRUST_PROXY "1"
 # The real key comes from Parameter Store below; make sure no key is kept in .env
 sed -i -E 's|^GOOGLE_KEY=.*|# GOOGLE_KEY is injected at runtime from SSM Parameter Store|' "$LC_DIR/.env"
 
@@ -63,4 +69,4 @@ docker compose up -d
 docker compose up -d --force-recreate api
 unset GOOGLE_KEY
 
-log "Baker's Crumbs started (release $RELEASE)"
+log "Baker's Crumbs started (release $RELEASE) at https://$PUBLIC_HOST"

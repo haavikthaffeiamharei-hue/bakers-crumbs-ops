@@ -1,0 +1,17 @@
+# Caddy reverse proxy: free automatic HTTPS (Let's Encrypt) in front of LibreChat.
+# __PUBLIC_HOST__ is replaced by start-bakers-crumbs.sh (default: <elastic-ip-with-dashes>.sslip.io).
+__PUBLIC_HOST__ {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	reverse_proxy api:3080
+	log {
+		output stdout
+		format json
+	}
+}

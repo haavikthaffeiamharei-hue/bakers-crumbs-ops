@@ -2,8 +2,6 @@
 # Copied into /opt/librechat by scripts/start-bakers-crumbs.sh.
 services:
   api:
-    ports:
-      - "80:3080"            # the only port open in the security group
     environment:
       # Injected from SSM Parameter Store by start-bakers-crumbs.sh at start-up; never stored in a file.
       - GOOGLE_KEY=${GOOGLE_KEY:-}
@@ -18,3 +16,22 @@ services:
       - ./branding/logo-180.png:/app/client/dist/assets/apple-touch-icon-180x180.png:ro
       - ./branding/logo-192.png:/app/client/dist/assets/icon-192x192.png:ro
       - ./branding/maskable-512.png:/app/client/dist/assets/maskable-icon.png:ro
+
+  # HTTPS front door. Ports 80 (redirect + certificate check) and 443 are the only ones open in the security group.
+  caddy:
+    image: caddy:2
+    container_name: bakers-crumbs-https
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
