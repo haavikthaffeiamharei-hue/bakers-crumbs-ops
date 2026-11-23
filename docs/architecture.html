@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWS infrastructure design - Baker's Crumbs (SAM10)</title><link rel="icon" href="img/logo.svg"><link rel="stylesheet" href="style.css"></head>
+<body><header><img src="img/logo.svg" alt="Baker's Crumbs logo"><div><div class="t">Baker's Crumbs &mdash; SAM10 Final Project</div>
+<div class="s">Systems Administration and Maintenance &middot; Thaffeia Mharei T. Haavik (solo) &middot; built on LibreChat (MIT)</div></div></header>
+<nav><a href="index.html">1. Summary</a><a href="architecture.html" class=on>2. Infrastructure</a><a href="system.html">3. System &amp; card</a><a href="baseline.html">4. Baseline</a><a href="well-architected.html">5. Well-Architected</a><a href="operations.html">6. Monitoring, backup, security</a><a href="automation-incident.html">7. Automation &amp; incident</a><a href="results.html">8&ndash;9. Results &amp; next</a><a href="declaration.html">Declaration</a></nav><main>
+
+<h1>AWS infrastructure design</h1>
+<p>Everything runs in one AWS account, in one region (us-east-1), on one server. The only thing outside AWS is the Gemini model.</p>
+
+<svg viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AWS infrastructure diagram for Baker's Crumbs" style="width:100%;height:auto;background:#fff;border:1px solid #E3CFAE;border-radius:8px">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#5A3A1E"/></marker></defs>
+<style>.b{fill:#FFFAF2;stroke:#8B5A2B;stroke-width:1.6;rx:8}.c{fill:#F3E4CD;stroke:#8B5A2B;stroke-width:1.6}.t{font:600 13px system-ui,sans-serif;fill:#3D2614}.s{font:11px system-ui,sans-serif;fill:#5c4532}.l{stroke:#5A3A1E;stroke-width:1.6;fill:none;marker-end:url(#a)}.d{stroke:#5A3A1E;stroke-width:1.4;fill:none;stroke-dasharray:5 4;marker-end:url(#a)}.n{font:italic 11px system-ui,sans-serif;fill:#8B5A2B}.g{fill:none;stroke:#C9A47A;stroke-width:1.4;stroke-dasharray:6 4}</style>
+<rect x="10" y="230" width="130" height="70" class="b"/><text x="75" y="260" text-anchor="middle" class="t">Customer</text><text x="75" y="278" text-anchor="middle" class="s">web browser</text>
+<rect x="175" y="20" width="805" height="590" class="g" rx="12"/><text x="190" y="42" class="t">AWS account bakers-crumbs &middot; us-east-1</text>
+<rect x="195" y="60" width="430" height="330" class="g" rx="10"/><text x="210" y="80" class="s">EC2 m7i-flex.large &middot; Ubuntu 24.04 &middot; Elastic IP 23.20.79.221 &middot; security group: 80/443 only, no SSH</text>
+<rect x="215" y="215" width="130" height="80" class="c" rx="8"/><text x="280" y="245" text-anchor="middle" class="t">Caddy</text><text x="280" y="262" text-anchor="middle" class="s">HTTPS (Let's Encrypt)</text><text x="280" y="278" text-anchor="middle" class="s">security headers</text>
+<rect x="385" y="200" width="140" height="110" class="c" rx="8"/><text x="455" y="235" text-anchor="middle" class="t">LibreChat</text><text x="455" y="252" text-anchor="middle" class="s">reskinned as</text><text x="455" y="268" text-anchor="middle" class="s">Baker's Crumbs</text><text x="455" y="286" text-anchor="middle" class="s">(Docker)</text>
+<rect x="385" y="330" width="140" height="48" class="c" rx="8"/><text x="455" y="352" text-anchor="middle" class="t">MongoDB</text><text x="455" y="368" text-anchor="middle" class="s">users &amp; chats</text>
+<rect x="215" y="100" width="190" height="80" class="b"/><text x="310" y="125" text-anchor="middle" class="t">cron automations</text><text x="310" y="143" text-anchor="middle" class="s">hourly MongoDB backup</text><text x="310" y="159" text-anchor="middle" class="s">15-min health check</text><text x="310" y="173" text-anchor="middle" class="s">1-min request logger</text>
+<rect x="425" y="100" width="185" height="80" class="b"/><text x="517" y="125" text-anchor="middle" class="t">start-bakers-crumbs.sh</text><text x="517" y="143" text-anchor="middle" class="s">builds config from S3 docs,</text><text x="517" y="159" text-anchor="middle" class="s">reads key at runtime</text><text x="517" y="173" text-anchor="middle" class="s">CloudWatch agent</text>
+<rect x="660" y="60" width="150" height="60" class="b"/><text x="735" y="86" text-anchor="middle" class="t">S3 bakers-crumbs-tmth</text><text x="735" y="104" text-anchor="middle" class="s">content/ &middot; backups/ (7 days)</text>
+<rect x="830" y="60" width="140" height="60" class="b"/><text x="900" y="86" text-anchor="middle" class="t">SSM Parameter Store</text><text x="900" y="104" text-anchor="middle" class="s">Gemini key (SecureString)</text>
+<rect x="660" y="160" width="150" height="70" class="b"/><text x="735" y="186" text-anchor="middle" class="t">CloudWatch</text><text x="735" y="204" text-anchor="middle" class="s">5 log groups (30 days)</text><text x="735" y="220" text-anchor="middle" class="s">metrics, dashboard, 9 alarms</text>
+<rect x="830" y="160" width="140" height="70" class="b"/><text x="900" y="188" text-anchor="middle" class="t">SNS</text><text x="900" y="206" text-anchor="middle" class="s">bakers-crumbs-alerts</text><text x="900" y="222" text-anchor="middle" class="s">&rarr; email</text>
+<rect x="660" y="270" width="150" height="60" class="b"/><text x="735" y="296" text-anchor="middle" class="t">IAM</text><text x="735" y="314" text-anchor="middle" class="s">MFA users, admin role, EC2 role</text>
+<rect x="830" y="270" width="140" height="60" class="b"/><text x="900" y="296" text-anchor="middle" class="t">CloudTrail</text><text x="900" y="314" text-anchor="middle" class="s">sam10-trail (audit)</text>
+<rect x="660" y="370" width="310" height="50" class="b"/><text x="815" y="392" text-anchor="middle" class="t">Budgets &middot; $10/month alert</text><text x="815" y="409" text-anchor="middle" class="s">Session Manager for admin access (no SSH keys)</text>
+<rect x="195" y="470" width="300" height="110" class="b" style="fill:#fff"/><text x="345" y="498" text-anchor="middle" class="t">Google Gemini API (outside AWS)</text><text x="345" y="518" text-anchor="middle" class="s">gemini-3.5-flash-lite, free tier</text><text x="345" y="536" text-anchor="middle" class="s">via OpenAI-compatible endpoint</text><text x="345" y="556" text-anchor="middle" class="s">receives invented data only</text>
+<path d="M140,258 L213,258" class="l"/><text x="150" y="250" class="n">1 HTTPS</text>
+<path d="M345,255 L383,255" class="l"/><text x="349" y="248" class="n">2</text>
+<path d="M440,310 L380,468" class="l"/><text x="380" y="420" class="n">3 question + bakery docs</text>
+<path d="M330,468 L215,296" class="d"/><text x="160" y="430" class="n">4 answer streams back</text>
+<path d="M455,310 L455,328" class="l"/>
+<path d="M610,128 L658,95" class="d"/><path d="M610,140 L828,100" class="d"/>
+<path d="M610,165 L658,190" class="d"/><path d="M405,140 L658,110" class="d"/><path d="M810,195 L828,195" class="l"/>
+<path d="M140,280 C160,600 820,600 900,232" class="d"/><text x="610" y="560" class="n">alarm emails to the operator</text>
+</svg>
+<h2>How a question travels</h2>
+<ol>
+<li>The customer types a question at <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a>. The browser connects over HTTPS (port 443) to the server's Elastic IP.</li>
+<li><b>Caddy</b> terminates HTTPS with a free Let's Encrypt certificate, adds security headers, and passes the request to the <b>LibreChat</b> container.</li>
+<li>LibreChat adds the Baker's Crumbs instructions &mdash; built from the five bakery documents in <b>S3</b> when the app starts &mdash; and sends the question to <b>Gemini</b> with the API key that the start script read from <b>Parameter Store</b>.</li>
+<li>Gemini's answer streams back through Caddy to the browser. The chat is saved in <b>MongoDB</b>.</li>
+<li>Every minute the request logger writes the question, answer time, success and release to a log that the <b>CloudWatch</b> agent ships to CloudWatch, where metric filters feed the dashboard and alarms; alarms email me through <b>SNS</b>.</li>
+</ol>
+<h2>Every service and what it is for</h2>
+<table><tr><th>Service</th><th>What it is for</th></tr>
+<tr><td>EC2 m7i-flex.large (2 vCPU, 8 GB), Ubuntu 24.04, 30 GB encrypted gp3</td><td>Runs Docker: LibreChat, MongoDB, Meilisearch, the RAG helper services and Caddy</td></tr>
+<tr><td>Elastic IP 23.20.79.221</td><td>A permanent address, so HTTPS keeps working after a stop/start</td></tr>
+<tr><td>Security group <code>bakers-crumbs-sg</code></td><td>Allows only HTTP 80 (redirect + certificate check) and HTTPS 443 in; no SSH, no database port</td></tr>
+<tr><td>Caddy + Let's Encrypt (container)</td><td>HTTPS at <code>23-20-79-221.sslip.io</code>. CloudFront was the plan, but new AWS accounts must be verified by AWS Support first</td></tr>
+<tr><td>S3 <code>bakers-crumbs-tmth</code> (versioned)</td><td><code>content/</code>: the bakery documents the assistant answers from. <code>backups/</code>: hourly database backups, expired after 7 days</td></tr>
+<tr><td>Systems Manager Parameter Store</td><td>Gemini API key as an encrypted SecureString, read at start-up by the instance role</td></tr>
+<tr><td>Systems Manager Session Manager</td><td>Browser terminal for admin work &mdash; no SSH keys exist</td></tr>
+<tr><td>IAM</td><td>MFA on root and on my IAM user; read-only daily user; MFA-protected admin role; least-privilege role for the server</td></tr>
+<tr><td>CloudWatch (agent, Logs, metrics, dashboard, alarms)</td><td>Memory and disk metrics, app/database/web/request/automation logs (30-day retention), 9 alarms, the BakersCrumbs dashboard</td></tr>
+<tr><td>SNS <code>bakers-crumbs-alerts</code></td><td>Emails alarms to my real inbox</td></tr>
+<tr><td>CloudTrail <code>sam10-trail</code></td><td>Records who did what in the account</td></tr>
+<tr><td>AWS Budgets</td><td>$10/month budget alert</td></tr>
+<tr><td>Google Gemini API (outside AWS)</td><td>Writes the answers. Receives only invented bakery content and test questions</td></tr></table>
+
+</main><footer>Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>

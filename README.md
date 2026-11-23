@@ -24,11 +24,22 @@ All steps were run and checked by the author in her own AWS account.
 ## What is in here
 
 ```
-content/                      Source copy of the 5 invented bakery documents (live copy is in S3)
-librechat/branding/           Baker's Crumbs logo (SVG) and browser icons (PNG)
-librechat/docker-compose.override.yml   Port 80, librechat.yaml mount, branding mounts, key injection
-scripts/build_config.py       Builds librechat.yaml: name, theme colours, hidden features, assistant instructions
-scripts/start-bakers-crumbs.sh  Pulls content from S3, reads the Gemini key from Parameter Store, starts LibreChat
+content/                                 Source copy of the 5 invented bakery documents (live copy is in S3)
+librechat/branding/                      Baker's Crumbs logo (SVG) and browser icons (PNG)
+librechat/Caddyfile.template             HTTPS front door (Caddy + Let's Encrypt) with security headers
+librechat/docker-compose.override.yml    Branding mounts, key injection, Caddy, container logs -> CloudWatch
+scripts/build_config.py                  Builds librechat.yaml: name, theme, hidden features, assistant instructions
+scripts/start-bakers-crumbs.sh           Pulls content from S3, reads the Gemini key from Parameter Store, starts the app
+scripts/request-logger.sh                Every minute: one JSON line per answer (question, duration, success, release)
+scripts/install-monitoring.sh            Installs the CloudWatch agent, request-logger cron and log rotation
+scripts/backup-mongodb.sh                AUTOMATION 1 - hourly database backup to S3
+scripts/health-check.sh                  AUTOMATION 2 - 15-minute health check -> CloudWatch metric HealthCheckOK
+scripts/install-automation.sh            Installs both automations as cron jobs
+scripts/restore-mongodb.sh               Restores the database from the newest (or a given) S3 backup
+monitoring/setup-cloudwatch.sh           Creates log groups, metric filters, alarms and the dashboard
+monitoring/dashboard.json                CloudWatch dashboard layout
+monitoring/cloudwatch-agent.json         CloudWatch agent config (memory, disk, log files)
+docs/RUNBOOK-assistant-not-answering.md  Runbook for Gemini 404/429 failures
 ```
 
 ## How it fits together
@@ -60,6 +71,25 @@ bash /opt/bakers-crumbs-ops/scripts/start-bakers-crumbs.sh
 
 Always start or restart the app with `start-bakers-crumbs.sh`, not a bare `docker compose up`, so the key is injected.
 
+### Monitoring
+1. Create the SNS topic `bakers-crumbs-alerts` and confirm an email subscription.
+2. With permission to manage CloudWatch (CloudShell as an admin, or a temporary policy on the instance role
+   that is removed straight afterwards), run `bash monitoring/setup-cloudwatch.sh`.
+3. On the server: `bash /opt/bakers-crumbs-ops/scripts/install-monitoring.sh`, then run the start script again
+   so the containers send their logs to CloudWatch.
+4. Create the alarm `bakers-crumbs-health-check-failed` on `BakersCrumbs/HealthCheckOK` (Minimum < 1 over 15 min,
+   missing data = breaching) in the console.
+
+### Automations, backup and restore
+```bash
+bash /opt/bakers-crumbs-ops/scripts/install-automation.sh     # schedules backup (hourly) and health check (15 min)
+bash /opt/bakers-crumbs-ops/scripts/backup-mongodb.sh         # run a backup now
+bash /opt/bakers-crumbs-ops/scripts/restore-mongodb.sh        # restore the newest backup (stops and restarts the app)
+```
+Each automation run writes one JSON line to `/var/log/bakers-crumbs/automation.log`, shipped to the CloudWatch
+log group `/bakers-crumbs/automation`. The S3 lifecycle rule `expire-backups-after-7-days` keeps backups for 7 days.
+If `git pull` complains about local changes after installing, run `git config core.fileMode false` in the repo.
+
 ## Contribution log
 
 Solo project — all work by Thaffeia Mharei T. Haavik.
@@ -67,4 +97,4 @@ Solo project — all work by Thaffeia Mharei T. Haavik.
 | Date | Work |
 | --- | --- |
 | 17 Nov 2026 | Chose base system and domain. Laptop could not run Docker (WSL/DISM errors, full C: drive); AWS Academy sandboxes found to wipe every session. Opened a personal AWS account (Free plan). Root MFA, IAM user with MFA, MFA-protected admin role, $10 budget, CloudTrail, Gemini key in Parameter Store, S3 content bucket with versioning, least-privilege EC2 role. |
-| 23 Nov 2026 | Launched EC2 (m7i-flex.large, encrypted 30 GB gp3, HTTP-only security group, no SSH; access via Session Manager). Installed Docker, ran original LibreChat v0.8.9, created this repository with the reskin and start-up script. |
+| 23 Nov 2026 | Launched EC2 (m7i-flex.large, encrypted 30 GB gp3, no SSH; access via Session Manager). Ran original LibreChat v0.8.9; built and deployed the reskin from this repository. Incident 1: `gemini-2.5-flash` 404 for new keys -> moved model. Elastic IP; CloudFront and CloudShell blocked pending new-account verification -> HTTPS with Caddy + Let's Encrypt. CloudWatch agent, request logger, container logs, 9 alarms, dashboard, SNS email. Incident 2: free-tier 429 detected by alarms -> flash-lite + no auto-titles. Hourly backup and 15-minute health check automations; restore test (database deleted and restored in 12 s). Runbook written. |
