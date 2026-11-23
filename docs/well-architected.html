@@ -15,7 +15,7 @@
 <tr><td>Performance Efficiency</td><td>Right-size, measure, keep it responsive</td><td>Answers in 0.6&ndash;1.0 s (request log); memory about 16% and CPU under 10% at idle (dashboard), so the instance has room to spare; no load test</td><td class="adq">Adequate (accepted weaker)</td></tr>
 <tr><td>Cost Optimization</td><td>Know your spend, alert on it, avoid waste</td><td>$10 budget alert; tags <code>Project=SAM10</code>; no paid extras (no WAF, NAT, load balancer); $0.01 spent of $120 credits</td><td class="ok">Good</td></tr>
 <tr><td>Sustainability</td><td>Minimise idle and oversized resources</td><td>One instance; but 8 GB is more than needed at current load and it runs 24/7</td><td class="adq">Adequate</td></tr></table>
-<h2>Pass #1: 23 Nov 2026, 15:10 (UTC+8), right after the deployment first worked</h2>
+<h2>Pass #1: 23 Nov 2026, 15:10 PST, right after the deployment first worked</h2>
 <table><tr><th>Pillar</th><th>What the system did then</th><th>Verdict</th></tr>
 <tr><td>Operational Excellence</td><td>Scripted deployment from GitHub, but no monitoring, alarms or automation; incident 1 found only by chance</td><td class="gap">Gap</td></tr>
 <tr><td>Security</td><td>MFA, roles, CloudTrail, Parameter Store, no SSH, encrypted disk, HTTPS already in place</td><td class="ok">Good</td></tr>
@@ -26,4 +26,4 @@
 <h2>What changed between the passes</h2><p>Operational Excellence and Reliability moved from <span class="gap">Gap</span> to <span class="ok">Good</span> / <span class="adq">Adequate</span>: monitoring, alarms, backups with a tested restore, two automations and a runbook were added, and the second outage was detected by alarms instead of by chance.</p>
 <h2>The one gap I would fix first</h2><p><b>Reliability: everything depends on one server in one Availability Zone.</b> If that server or its disk is lost, the hourly backups in S3 save the chats, but the site is down for 30&ndash;45 minutes while a new server is built by hand from the README. I would fix this first with a launch template that builds a working server automatically from the repository and the newest backup, which cuts recovery to minutes without paying for a second server all the time.</p>
 
-</main><footer>Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>
+</main><footer>All times are Philippine Standard Time (PST, UTC+8); AWS screenshots and alarm emails show UTC, 8 hours behind. Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>

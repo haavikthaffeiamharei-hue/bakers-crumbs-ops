@@ -8,17 +8,17 @@
 <h1>Results</h1>
 <p>Each comparison measures the same thing the same way over equal periods, with dates.</p>
 <table><tr><th>Measure</th><th>Before</th><th>After</th><th>How measured</th></tr>
-<tr><td>Failed answers</td><td><span class="todo">[x of y]</span> in 23 Nov 07:20&ndash;07:45 UTC (25 min, before the incident 2 fix)</td><td><span class="todo">[x of y]</span> in 23 Nov 07:45&ndash;08:10 UTC (25 min, after the fix)</td><td>Request log, counted by script</td></tr>
+<tr><td>Failed answers</td><td><span class="todo">[x of y]</span> in 23 Nov 15:20&ndash;15:45 PST (25 min, before the incident 2 fix)</td><td><span class="todo">[x of y]</span> in 23 Nov 15:45&ndash;16:10 PST (25 min, after the fix)</td><td>Request log, counted by script</td></tr>
 <tr><td>Average answer time</td><td><span class="todo">[ms]</span> (same window)</td><td><span class="todo">[ms]</span> (same window)</td><td>Request log <code>duration_ms</code></td></tr>
-<tr><td>Time to detect an assistant outage</td><td>Incident 1 (23 Nov 06:16 UTC, no monitoring): found only because I was testing; otherwise undetected</td><td>Incident 2 (23 Nov 07:35 UTC): alarm email after about 1&ndash;3 min</td><td>Incident timelines</td></tr>
+<tr><td>Time to detect an assistant outage</td><td>Incident 1 (23 Nov 14:16 PST, no monitoring): found only because I was testing; otherwise undetected</td><td>Incident 2 (23 Nov 15:35 PST): alarm email after about 1&ndash;3 min</td><td>Incident timelines</td></tr>
 <tr><td>Time to fix</td><td>Incident 1: about 5 min</td><td>Incident 2: about 7 min after the alarm, with a now-written runbook</td><td>Incident timelines</td></tr>
 <tr><td>Database recovery</td><td>17&ndash;22 Nov: no backups, so a lost disk would lose every chat</td><td>23 Nov: restore tested, 12 s, 0 chats lost; RPO 1 h</td><td>Restore test</td></tr>
 <tr><td>Monthly cost</td><td>$0.00 used of $120 credits (17 Nov 2026)</td><td><span class="todo">[$ used, date]</span></td><td>AWS Billing &rarr; Credits</td></tr></table>
-<figure><a href="img/E-06_dashboard-3h.jpg"><img src="img/E-06_dashboard-3h.jpg" alt="Graph: answers, errors and response time on 23 Nov 2026 05:00&amp;ndash;08:00 UTC: failed answers and the 89-second response during incident 2 (about 07:35), then normal answers after the 07:45 fix." loading="lazy"></a><figcaption>Graph: answers, errors and response time on 23 Nov 2026 05:00&ndash;08:00 UTC: failed answers and the 89-second response during incident 2 (about 07:35), then normal answers after the 07:45 fix.</figcaption></figure>
+<figure><a href="img/E-06_dashboard-3h.jpg"><img src="img/E-06_dashboard-3h.jpg" alt="Graph: answers, errors and response time on 23 Nov 2026 13:00&amp;ndash;16:00 PST: failed answers and the 89-second response during incident 2 (about 15:35), then normal answers after the 15:45 fix." loading="lazy"></a><figcaption>Graph: answers, errors and response time on 23 Nov 2026 13:00&ndash;16:00 PST: failed answers and the 89-second response during incident 2 (about 15:35), then normal answers after the 15:45 fix.</figcaption></figure>
 <div class="grid2"><figure><a href="img/cost_02_credits-before-120usd.jpg"><img src="img/cost_02_credits-before-120usd.jpg" alt="Cost before: $0.00 used, $120 credits (17 Nov 2026)." loading="lazy"></a><figcaption>Cost before: $0.00 used, $120 credits (17 Nov 2026).</figcaption></figure><figure><span class="todo">[Cost after screenshot: Billing &rarr; Credits]</span></figure></div>
 
 <h2>Test questions and the quality number</h2>
-<p><b>Correct on 4 of 6</b>: six questions asked in new chats on 23 Nov 2026 (07:46&ndash;07:51 UTC, gemini-3.5-flash-lite, release 03b3cc7), each answer compared by hand with the bakery documents.</p>
+<p><b>Correct on 4 of 6</b>: six questions asked in new chats on 23 Nov 2026 (15:46&ndash;15:51 PST, gemini-3.5-flash-lite, release 03b3cc7), each answer compared by hand with the bakery documents.</p>
 <table><tr><th>#</th><th>Question</th><th>Answer (summary)</th><th>Grade</th></tr>
 <tr><td>1</td><td>What time do you open on Saturday?</td><td>6:00 AM</td><td class="ok">Correct</td></tr>
 <tr><td>2</td><td>How much is a Cookie Box of 12?</td><td>&#8369;450</td><td class="ok">Correct</td></tr>
@@ -38,4 +38,4 @@
 <li><b>Stop the empty-answer alarm counting provider errors</b>: during incident 2 it fired for answers that had already failed, a duplicate alert.</li>
 </ol>
 
-</main><footer>Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>
+</main><footer>All times are Philippine Standard Time (PST, UTC+8); AWS screenshots and alarm emails show UTC, 8 hours behind. Baker's Crumbs is an invented bakery; every person, price and document on this site is fictional. Live system: <a href="https://23-20-79-221.sslip.io">https://23-20-79-221.sslip.io</a> &middot; Code: <a href="https://github.com/haavikthaffeiamharei-hue/bakers-crumbs-ops">GitHub repository</a></footer></body></html>
