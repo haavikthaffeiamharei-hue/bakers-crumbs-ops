@@ -12,7 +12,7 @@ LC_DIR=/opt/librechat
 REGION=us-east-1
 BUCKET=bakers-crumbs-tmth
 KEY_PARAM=/bakers-crumbs/gemini-api-key
-GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}
+GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}
 RELEASE="bakers-crumbs-$(git -C "$REPO_DIR" rev-parse --short HEAD 2>/dev/null || echo local)"
 
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [start-bakers-crumbs] $*"; }
@@ -49,6 +49,7 @@ set_env CUSTOM_FOOTER "Baker's Crumbs Helper - an invented bakery for a SAM10 cl
 set_env ENDPOINTS "google"
 set_env GOOGLE_MODELS "$GEMINI_MODEL"
 set_env BAKERS_CRUMBS_RELEASE "$RELEASE"
+set_env SCHEDULES_SINGLE_PROCESS "true"
 # The real key comes from Parameter Store below; make sure no key is kept in .env
 sed -i -E 's|^GOOGLE_KEY=.*|# GOOGLE_KEY is injected at runtime from SSM Parameter Store|' "$LC_DIR/.env"
 
