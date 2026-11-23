@@ -1,0 +1,13 @@
+# Never commit secrets or local environment files
+.env
+.env.*
+*.pem
+*.key
+*.ppk
+credentials*
+*.csv
+
+# Generated / downloaded on the server
+librechat.yaml
+bakers-content/
+__pycache__/
