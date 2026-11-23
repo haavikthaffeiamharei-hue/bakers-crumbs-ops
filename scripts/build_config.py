@@ -60,6 +60,22 @@ light = {
     "rgb-button-primary-hover": "112 70 32",
     "rgb-ring-primary": "139 90 43",
     "rgb-link": "139 90 43",
+    # Page areas used by this LibreChat build (found in the client CSS)
+    "rgb-presentation": "255 250 242",
+    "rgb-surface-chat": "255 250 242",
+    "rgb-surface-primary-alt": "250 240 225",
+    "rgb-surface-sidebar": "246 234 214",
+    "rgb-surface-nav-hover": "238 220 192",
+    "rgb-surface-nav-selected": "232 210 178",
+    "rgb-header-primary": "250 240 225",
+    "rgb-header-hover": "240 222 196",
+    "rgb-surface-composer": "255 255 255",
+    "rgb-surface-composer-hover": "250 240 225",
+    "rgb-surface-user-message": "243 224 196",
+    "rgb-surface-menu": "255 250 242",
+    "rgb-surface-card": "250 240 225",
+    "rgb-surface-active": "238 220 192",
+    "rgb-surface-dialog": "255 250 242",
 }
 dark = {
     "rgb-surface-primary": "33 24 18",
@@ -78,6 +94,22 @@ dark = {
     "rgb-button-primary-hover": "196 128 62",
     "rgb-ring-primary": "217 160 91",
     "rgb-link": "232 182 120",
+    # Page areas used by this LibreChat build (found in the client CSS)
+    "rgb-presentation": "36 26 19",
+    "rgb-surface-chat": "36 26 19",
+    "rgb-surface-primary-alt": "43 31 23",
+    "rgb-surface-sidebar": "29 21 15",
+    "rgb-surface-nav-hover": "58 42 31",
+    "rgb-surface-nav-selected": "70 51 37",
+    "rgb-header-primary": "43 31 23",
+    "rgb-header-hover": "58 42 31",
+    "rgb-surface-composer": "50 36 27",
+    "rgb-surface-composer-hover": "58 42 31",
+    "rgb-surface-user-message": "92 62 38",
+    "rgb-surface-menu": "43 31 23",
+    "rgb-surface-card": "43 31 23",
+    "rgb-surface-active": "70 51 37",
+    "rgb-surface-dialog": "43 31 23",
 }
 
 config = {
@@ -111,6 +143,8 @@ config = {
                 "default": True,
                 "description": "Answers questions about the Baker's Crumbs menu, prices, hours, pre-orders, delivery and ingredients.",
                 "iconURL": "/assets/logo.svg",
+                "showIconInMenu": True,
+                "showIconInHeader": True,
                 "conversation_starters": [
                     "What time do you open on Saturday?",
                     "How much is a Cookie Box of 12?",
@@ -121,6 +155,7 @@ config = {
                     "endpoint": "google",
                     "model": model,
                     "modelLabel": "Baker's Crumbs Helper",
+                    "iconURL": "/assets/logo.svg",
                     "promptPrefix": instructions,
                     "temperature": 0.2,
                     "maxOutputTokens": 600,

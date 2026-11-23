@@ -60,6 +60,8 @@ export GOOGLE_KEY
 log "Starting containers"
 cd "$LC_DIR"
 docker compose up -d
+# LibreChat only reads librechat.yaml and .env when it starts, so always recreate the app container
+docker compose up -d --force-recreate api
 unset GOOGLE_KEY
 
 log "Baker's Crumbs started (release $RELEASE)"
